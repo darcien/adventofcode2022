@@ -6,6 +6,10 @@ default:
 run DAY:
   deno run --allow-read "./{{DAY}}.ts"
 
+# Run puzzle solver for specific day, BUT using the real input instead of sample
+submit DAY:
+  deno run --allow-read "./{{DAY}}.ts" --submit
+
 # Create solver and sample input file from template
 new DAY:
   cp "./day_template.ts" "./{{DAY}}.ts"

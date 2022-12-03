@@ -14,15 +14,21 @@ export function getFileName(
   return fileNameWithExt;
 }
 
-export function loadInput(day: string) {
+export async function loadInput(day: string) {
+  const useSampleData = !Deno.args.includes("--submit");
+
+  if (useSampleData) {
+    const sample = `./${day}.sample.txt`;
+    return Deno.readTextFile(sample);
+  }
+
   const input = `./${day}.input.txt`;
   try {
-    return Deno.readTextFile(input);
-  } catch (_error) {
-    console.log(`No input for #${day}, using sample...`);
+    return await Deno.readTextFile(input);
+  } catch (error) {
+    console.log(`No input for #${day}`);
+    throw error;
   }
-  const sample = `./${day}.sample.txt`;
-  return Deno.readTextFile(sample);
 }
 
 export async function getDayInput(metaUrl: string) {
