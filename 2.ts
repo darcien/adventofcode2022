@@ -12,7 +12,7 @@ type RoundFromPart2 = `${OpponentMove} ${RoundResult}`;
 type RPS = "R" | "P" | "S";
 
 function parseInput(input: string) {
-  return input.split("\n") as Array<Round | "">;
+  return input.split("\n") as Array<Round>;
 }
 
 function computeMyMoveScore(myMove: MyMove | RPS) {
@@ -123,8 +123,7 @@ type ParsedInput = ReturnType<typeof parseInput>;
 const allSolvers = [
   (parsedInput: ParsedInput) => {
     const totalScore = parsedInput.reduce(
-      (total, current) =>
-        current === "" ? total : total + computeRoundScore(current),
+      (total, current) => total + computeRoundScore(current),
       0
     );
 
@@ -132,8 +131,7 @@ const allSolvers = [
   },
   (parsedInput: ParsedInput) => {
     const totalScore = parsedInput.reduce(
-      (total, current) =>
-        current === "" ? total : total + computeRoundTotalScorePart2(current),
+      (total, current) => total + computeRoundTotalScorePart2(current),
       0
     );
 

@@ -14,17 +14,25 @@ export function getFileName(
   return fileNameWithExt;
 }
 
+async function readTextFile(path: string | URL) {
+  const textFile = await Deno.readTextFile(path);
+  if (textFile.endsWith("\n")) {
+    return textFile.slice(0, -1);
+  }
+  return textFile;
+}
+
 export async function loadInput(day: string) {
   const useSampleData = !Deno.args.includes("--submit");
 
   if (useSampleData) {
     const sample = `./${day}.sample.txt`;
-    return Deno.readTextFile(sample);
+    return readTextFile(sample);
   }
 
   const input = `./${day}.input.txt`;
   try {
-    return await Deno.readTextFile(input);
+    return await readTextFile(input);
   } catch (error) {
     console.log(`No input for #${day}`);
     throw error;

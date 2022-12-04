@@ -16,11 +16,7 @@ const allSolvers = [
     elfCalsList.forEach((elfCals) => {
       const total = elfCals
         .split("\n")
-        .reduce(
-          (total, current) =>
-            current === "" ? total : total + parseInt(current, 10),
-          0
-        );
+        .reduce((total, current) => total + parseInt(current, 10), 0);
       if (total > maxCals) {
         maxCals = total;
       }
@@ -35,11 +31,7 @@ const allSolvers = [
     elfCalsList.forEach((elfCals) => {
       const total = elfCals
         .split("\n")
-        .reduce(
-          (total, current) =>
-            current === "" ? total : total + parseInt(current, 10),
-          0
-        );
+        .reduce((total, current) => total + parseInt(current, 10), 0);
 
       if (top3.length < 3) {
         top3.push(total);
