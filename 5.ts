@@ -1,7 +1,3 @@
-import { executeSolvers, getDayInput } from "./utils.ts";
-
-const input = await getDayInput(import.meta.url);
-
 type OpString = `move ${number} from ${number} to ${number}`;
 type Op = {
   quantity: number;
@@ -65,7 +61,7 @@ function parseOpString(op: OpString): Op {
   };
 }
 
-function parseInput(input: string) {
+export function parseInput(input: string) {
   const lines = input.split("\n");
   const firstOp = lines.findIndex((line) => line.startsWith("move "));
 
@@ -122,6 +118,9 @@ function executeOpOnStacksWithCrateMover9001(
     throw new Error(`no target stack ${to}`);
   }
   if (sourceStack.length < quantity) {
+    console.log(stacks);
+    console.log({ op });
+
     throw new Error(
       `not enough crate to move from source ${from}, ${quantity}`
     );
@@ -134,7 +133,7 @@ function executeOpOnStacksWithCrateMover9001(
   return stacks;
 }
 
-const allSolvers = [
+export const allSolvers = [
   ({ ops, stacks }: ParsedInput) => {
     // Modify stacks in place
     ops.forEach((op) => executeOpOnStacks(stacks, op));
@@ -154,6 +153,3 @@ const allSolvers = [
     return topCrates.join("");
   },
 ];
-
-const result = executeSolvers(allSolvers, parseInput, input);
-console.log(result);

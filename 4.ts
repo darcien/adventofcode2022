@@ -1,13 +1,9 @@
-import { executeSolvers, getDayInput } from "./utils.ts";
-
-const input = await getDayInput(import.meta.url);
-
 type StringRange = `${number}-${number}`;
 type StringRangePair = `${StringRange},${StringRange}`;
 type Range = [number, number];
 type RangePair = [Range, Range];
 
-function parseInput(input: string) {
+export function parseInput(input: string) {
   return input.split("\n") as Array<StringRangePair>;
 }
 
@@ -51,7 +47,7 @@ function checkPartialOverlap(x: Range, y: Range) {
   return doesAPartiallyContainB(x, y) || doesAPartiallyContainB(y, x);
 }
 
-const allSolvers = [
+export const allSolvers = [
   // each line: 2-4,6-8
   (rangePairs: ParsedInput) => {
     return rangePairs.filter((rangePair) => {
@@ -66,6 +62,3 @@ const allSolvers = [
     }).length;
   },
 ];
-
-const result = executeSolvers(allSolvers, parseInput, input);
-console.log(result);

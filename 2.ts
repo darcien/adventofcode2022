@@ -1,7 +1,3 @@
-import { executeSolvers, getDayInput } from "./utils.ts";
-
-const input = await getDayInput(import.meta.url);
-
 type OpponentMove = "A" | "B" | "C";
 type MyMove = "X" | "Y" | "Z";
 type Round = `${OpponentMove} ${MyMove}`;
@@ -11,7 +7,7 @@ type RoundResult = "X" | "Y" | "Z";
 type RoundFromPart2 = `${OpponentMove} ${RoundResult}`;
 type RPS = "R" | "P" | "S";
 
-function parseInput(input: string) {
+export function parseInput(input: string) {
   return input.split("\n") as Array<Round>;
 }
 
@@ -120,7 +116,7 @@ function computeRoundTotalScorePart2(round: RoundFromPart2) {
 
 type ParsedInput = ReturnType<typeof parseInput>;
 
-const allSolvers = [
+export const allSolvers = [
   (parsedInput: ParsedInput) => {
     const totalScore = parsedInput.reduce(
       (total, current) => total + computeRoundScore(current),
@@ -138,6 +134,3 @@ const allSolvers = [
     return totalScore;
   },
 ];
-
-const result = executeSolvers(allSolvers, parseInput, input);
-console.log(result);

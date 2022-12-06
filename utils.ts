@@ -22,8 +22,14 @@ async function readTextFile(path: string | URL) {
   return textFile;
 }
 
-export async function loadInput(day: string) {
-  const useSampleData = !Deno.args.includes("--submit");
+export type LoadInputOptions = {
+  useInputFile?: boolean;
+};
+export async function loadInput(
+  day: string | number,
+  options?: LoadInputOptions
+) {
+  const useSampleData = !options?.useInputFile;
 
   if (useSampleData) {
     const sample = `./${day}.sample.txt`;
@@ -56,4 +62,26 @@ export function executeSolvers<T>(
     return lastSolver(parsed);
   }
   return null;
+}
+export type SolverModule = {
+  parseInput?: (input: string) => unknown;
+  allSolvers?: Array<(parsedInput: unknown) => unknown>;
+};
+export async function loadDay(day: number, options?: LoadInputOptions) {
+  const { allSolvers, parseInput } = (await import(
+    `./${day}.ts`
+  )) as SolverModule;
+
+  if (!allSolvers) {
+    throw new Error("invalid solver module loaded, missing allSolvers export");
+  }
+  if (!parseInput) {
+    throw new Error("invalid solver module loaded, missing parseInput export");
+  }
+  const dayInput = await loadInput(day, options);
+  return {
+    allSolvers,
+    parseInput,
+    dayInput,
+  };
 }

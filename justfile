@@ -4,11 +4,11 @@ default:
 
 # Run puzzle solver for specific day
 run DAY:
-  deno run --allow-read "./{{DAY}}.ts"
+  deno run --allow-read --allow-net=deno.land "./executor.ts" --day={{DAY}}
 
 # Run puzzle solver for specific day, BUT using the real input instead of sample
 submit DAY:
-  deno run --allow-read "./{{DAY}}.ts" --submit
+  deno run --allow-read --allow-net=deno.land "./executor.ts" --day={{DAY}} --submit
 
 # Create solver and sample input file from template
 new DAY:
@@ -18,6 +18,10 @@ new DAY:
 # Create empty input file
 input DAY:
   touch "./{{DAY}}.input.txt"
+
+# Run benchmark on all solvers (unstable)
+bench:
+  deno bench --unstable --allow-read --allow-net=deno.land bench.ts
 
 # Run tests, leave flags empty to run all tests
 test *FLAGS:

@@ -1,11 +1,8 @@
 import { chunk } from "https://deno.land/std@0.167.0/collections/chunk.ts";
 import { intersect } from "https://deno.land/std@0.167.0/collections/intersect.ts";
 import { sumOf } from "https://deno.land/std@0.167.0/collections/sum_of.ts";
-import { executeSolvers, getDayInput } from "./utils.ts";
 
-const input = await getDayInput(import.meta.url);
-
-function parseInput(input: string) {
+export function parseInput(input: string) {
   return input.split("\n");
 }
 
@@ -87,7 +84,7 @@ function _groupEach3Rucksack(
   }, [] as Array<[Rucksack, Rucksack, Rucksack]>);
 }
 
-const allSolvers = [
+export const allSolvers = [
   (allRuckacks: ParsedInput) => {
     return sumOf(allRuckacks, computeCommonItemPriorities);
   },
@@ -98,6 +95,3 @@ const allSolvers = [
     );
   },
 ];
-
-const result = executeSolvers(allSolvers, parseInput, input);
-console.log(result);

@@ -1,14 +1,10 @@
-import { executeSolvers, getDayInput } from "./utils.ts";
-
-const input = await getDayInput(import.meta.url);
-
-function parseInput(input: string) {
+export function parseInput(input: string) {
   return input.split("\n\n");
 }
 
 type ParsedInput = ReturnType<typeof parseInput>;
 
-const allSolvers = [
+export const allSolvers = [
   (parsedInput: ParsedInput) => {
     const elfCalsList = parsedInput;
 
@@ -44,6 +40,3 @@ const allSolvers = [
     return top3.reduce((total, current) => total + current, 0);
   },
 ];
-
-const result = executeSolvers(allSolvers, parseInput, input);
-console.log(result);
