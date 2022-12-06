@@ -81,6 +81,14 @@ type ParsedInput = ReturnType<typeof parseInput>;
 
 function executeOpOnStacks(stacks: CrateStacks, op: Op): CrateStacks {
   let { quantity, from, to } = op;
+  const sourceStack = stacks.get(from);
+  if (!sourceStack) {
+    throw new Error(`no source stack ${from}`);
+  }
+  const targetStack = stacks.get(to);
+  if (!targetStack) {
+    throw new Error(`no target stack ${to}`);
+  }
   // This could be optimized by executing the entire op
   // on single go by checking the source stack has enough
   // quantity and reversing the moved crates before moving to target
@@ -88,14 +96,6 @@ function executeOpOnStacks(stacks: CrateStacks, op: Op): CrateStacks {
   // Okay nvm, 2nd part of the puzzle actually move all crates
   // at once, not 1 by 1.
   while (quantity > 0) {
-    const sourceStack = stacks.get(from);
-    if (!sourceStack) {
-      throw new Error(`no source stack ${from}`);
-    }
-    const targetStack = stacks.get(to);
-    if (!targetStack) {
-      throw new Error(`no target stack ${to}`);
-    }
     const crateToMove = sourceStack.pop();
     if (!crateToMove) {
       throw new Error(
@@ -108,10 +108,45 @@ function executeOpOnStacks(stacks: CrateStacks, op: Op): CrateStacks {
   return stacks;
 }
 
+function executeOpOnStacksWithCrateMover9001(
+  stacks: CrateStacks,
+  op: Op
+): CrateStacks {
+  const { quantity, from, to } = op;
+  const sourceStack = stacks.get(from);
+  if (!sourceStack) {
+    throw new Error(`no source stack ${from}`);
+  }
+  const targetStack = stacks.get(to);
+  if (!targetStack) {
+    throw new Error(`no target stack ${to}`);
+  }
+  if (sourceStack.length < quantity) {
+    throw new Error(
+      `not enough crate to move from source ${from}, ${quantity}`
+    );
+  }
+
+  const cratesToMove = sourceStack.slice(-quantity);
+  stacks.set(from, sourceStack.slice(0, sourceStack.length - quantity));
+  targetStack.push(...cratesToMove);
+
+  return stacks;
+}
+
 const allSolvers = [
   ({ ops, stacks }: ParsedInput) => {
     // Modify stacks in place
     ops.forEach((op) => executeOpOnStacks(stacks, op));
+
+    const topCrates = [] as Array<Crate>;
+    stacks.forEach((stack) => topCrates.push(stack.slice(-1)?.[0] || ""));
+
+    return topCrates.join("");
+  },
+  ({ ops, stacks }: ParsedInput) => {
+    // Modify stacks in place
+    ops.forEach((op) => executeOpOnStacksWithCrateMover9001(stacks, op));
 
     const topCrates = [] as Array<Crate>;
     stacks.forEach((stack) => topCrates.push(stack.slice(-1)?.[0] || ""));
