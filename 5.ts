@@ -140,7 +140,7 @@ const allSolvers = [
     ops.forEach((op) => executeOpOnStacks(stacks, op));
 
     const topCrates = [] as Array<Crate>;
-    stacks.forEach((stack) => topCrates.push(stack.slice(-1)?.[0] || ""));
+    stacks.forEach((stack) => topCrates.push(stack.at(-1) || ""));
 
     return topCrates.join("");
   },
@@ -149,7 +149,7 @@ const allSolvers = [
     ops.forEach((op) => executeOpOnStacksWithCrateMover9001(stacks, op));
 
     const topCrates = [] as Array<Crate>;
-    stacks.forEach((stack) => topCrates.push(stack.slice(-1)?.[0] || ""));
+    stacks.forEach((stack) => topCrates.push(stack.at(-1) || ""));
 
     return topCrates.join("");
   },
