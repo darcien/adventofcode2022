@@ -134,7 +134,8 @@ function executeOpOnStacksWithCrateMover9001(
 }
 
 export const allSolvers = [
-  ({ ops, stacks }: ParsedInput) => {
+  ({ ops, stacks: inputStacks }: ParsedInput) => {
+    const stacks = new Map(inputStacks);
     // Modify stacks in place
     ops.forEach((op) => executeOpOnStacks(stacks, op));
 
@@ -143,8 +144,8 @@ export const allSolvers = [
 
     return topCrates.join("");
   },
-  ({ ops, stacks }: ParsedInput) => {
-    // Modify stacks in place
+  ({ ops, stacks: inputStacks }: ParsedInput) => {
+    const stacks = new Map(inputStacks);
     ops.forEach((op) => executeOpOnStacksWithCrateMover9001(stacks, op));
 
     const topCrates = [] as Array<Crate>;

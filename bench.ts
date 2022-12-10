@@ -22,9 +22,6 @@ async function registerBench(day: number) {
 
   Deno.bench({
     name: `${day}.ts`,
-    // TODO: Make bench work on day 5
-    // day 5 has issue, most likely with shared memory between benchmark run
-    ignore: day === 5,
     fn: () => {
       lastSolver(parsed);
     },
